@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.commonOutlet {
+  min-height: calc(100vh - 203px);
+}
+
