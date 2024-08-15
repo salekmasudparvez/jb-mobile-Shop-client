@@ -14,6 +14,7 @@ const NavbarCompo = () => {
   const [openNav, setOpenNav] = useState(false);
   const [open, setOpen] = useState(false);
 
+
   const handleWindowResize = () =>
     window.innerWidth >= 960 && setOpenNav(false);
 

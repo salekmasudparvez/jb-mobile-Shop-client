@@ -1,3 +1,5 @@
+
+
 import {
     Card,
     Input,
@@ -10,45 +12,44 @@ import toast from 'react-hot-toast';
 import { Link, Navigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth/useAuth";
 
-export const Register = () => {
-    const [check, setCheck] = useState(false);
-    const {creatUserPassword, user,updateUserProfile,setUser,creatUserGoogle} = useAuth()
+export const Login = () => {
+    const { user, signInWithPassword } = useAuth()
+    const [check, setCheck] = useState(false)
     const handleInputChange = (e) => {
-        //e.preventDefault();
-        //console.log(e.target.checked)
+
         setCheck(e.target.checked)
     }
-    const handleRegister = async(e) => {
+    const handleRegister = async (e) => {
         e.preventDefault();
-        const name = e.target.name.value;
+
         const email = e.target.email.value;
         const password = e.target.password.value;
         if (!check) {
             return toast.error("You must agree to the Terms and Conditions.")
         }
-        if (!name) {
-            return toast.error("Name is required.")
-        }
+
         if (!email) {
             return toast.error("Email is required.")
         }
         if (!password) {
             return toast.error("Password is required.")
         }
-        // console.log({ name, email, password, checkbox: check })
-       try {
-        const response = await creatUserPassword(email, password);
-        await updateUserProfile(name);
-        setUser({ ...response?.user, displayName: name })
-        toast.success('Successfully created Account');
-       } catch (error) {
-        //console.log(error.message);
-        if(error?.message==='Firebase: Error (auth/email-already-in-use).'){
-           toast.error('Email already in use.');
-        }else{
-            toast.error('Failed to create Account');
+        //console.log({ email, password, checkbox: check })
+        try {
+            const response = await signInWithPassword(email, password)
+
+            if (response) {
+                toast.success("Logged in successfully.")
+            }
+
+        } catch (error) {
+            console.log(error.message)
+            if(error?.message==='Firebase: Error (auth/invalid-credential).'){
+                toast.error("Invalid email or password.")
+            }else{
+                toast.error("Something went wrong")
+            }
         }
-       }
     }
     if (user) {
         return <Navigate to="/"></Navigate>
@@ -64,25 +65,14 @@ export const Register = () => {
                 </div>
                 <Card color="transparent" shadow={false}>
                     <Typography variant="h4" color="blue-gray">
-                       Registration
+                        Login now
                     </Typography>
                     <Typography color="gray" className="mt-1 font-normal">
                         Nice to meet you! Enter your details to register.
                     </Typography>
                     <form onSubmit={handleRegister} className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96">
                         <div className="mb-1 flex flex-col gap-3">
-                            <Typography variant="h6" color="blue-gray" className="-mb-3">
-                                Your Name
-                            </Typography>
-                            <Input
-                                size="md"
-                                name="name"
-                                placeholder="Enter your name"
-                                className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-                                labelProps={{
-                                    className: "before:content-none after:content-none",
-                                }}
-                            />
+
                             <Typography variant="h6" color="blue-gray" className="-mb-3">
                                 Your Email
                             </Typography>
@@ -130,19 +120,18 @@ export const Register = () => {
                             containerProps={{ className: "-ml-2.5" }}
                         />
                         <Button type="submit" className="mt-6 bg-blue-500" fullWidth>
-                            sign up
+                            Log in
                         </Button>
                     </form>
                     <div className="flex justify-center items-center my-2">
                         <span className="border-t border-gray-800 flex grow"></span>
-                      <span className="px-2">Or</span> 
+                        <span className="px-2">Or</span>
                         <span className="border-t border-gray-800 flex-grow"></span>
                     </div>
                     <div className="flex justify-center ">
                         <Button
                             size="md"
                             variant="outlined"
-                            onClick={creatUserGoogle}
                             color="blue-gray"
                             className="flex items-center gap-3"
                         >
@@ -151,10 +140,10 @@ export const Register = () => {
                         </Button>
                     </div>
                     <div>
-                    <Typography color="gray" className="mt-4 text-center font-normal">
-                            Already have an account?{" "}
-                            <Link to="/login" className="font-medium text-gray-900">
-                                Log in
+                        <Typography color="gray" className="mt-4 text-center font-normal">
+                            Don&lsquo;t have any account?{" "}
+                            <Link to="/register" className="font-medium text-gray-900">
+                                Register
                             </Link>
                         </Typography>
                     </div>
