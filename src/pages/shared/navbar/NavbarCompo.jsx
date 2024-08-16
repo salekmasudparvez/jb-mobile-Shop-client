@@ -6,13 +6,25 @@ import {
   IconButton,
   Input,
   Button,
+  MenuHandler,
+  Menu,
+  Avatar,
+  MenuList,
+  MenuItem,
 } from "@material-tailwind/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import NavList from "./NavList";
+import useRole from "../../../hooks/useRole/useRole";
+import useAuth from "../../../hooks/useAuth/useAuth";
+import { Link } from "react-router-dom";
 
 const NavbarCompo = () => {
   const [openNav, setOpenNav] = useState(false);
   const [open, setOpen] = useState(false);
+  const { user, LogOutUser } = useAuth();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [role] = useRole();
+  const closeMenu = () => setIsMenuOpen(false);
 
 
   const handleWindowResize = () =>
@@ -75,11 +87,12 @@ const NavbarCompo = () => {
           <div className="hidden lg:block">
             <NavList />
           </div>
+
           <div className="lg:hidden flex justify-end  flex-grow">
-          <Button
+            <Button
               size="sm"
               color="#fff"
-              onClick={()=>setOpen(!open)}
+              onClick={() => setOpen(!open)}
               className=" rounded p-0 shadow-none hover:shadow-none bg-white"
             >
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#000000" className="size-6">
@@ -87,6 +100,71 @@ const NavbarCompo = () => {
               </svg>
 
             </Button>
+          </div>
+          <div className="px-5 lg:hidden flex">
+            <Menu open={isMenuOpen} handler={setIsMenuOpen} placement="bottom-end">
+              <MenuHandler>
+                <Button
+                  onClick={closeMenu}
+                  variant="text"
+                  color="blue-gray"
+                  className="lg:hidden flex items-center rounded-full p-0"
+                >
+                  <Avatar
+                    variant="circular"
+                    size="md"
+                    alt="tania andrew"
+                    withBorder={true}
+                    color="blue-gray"
+                    className=" p-0.5"
+                    src={user?.photoURL || "https://i.imgur.com/7Y3PdKY.png"}
+                  />
+                </Button>
+              </MenuHandler>
+              <MenuList className="p-1">
+                <MenuItem
+
+                  className={`flex flex-col justify-center items-start text-left gap-2 rounded hover:bg-white "
+                                        
+                                    }`}
+                >
+                  {role === "admin" && <Link to="/add-product" className="flex rounded-sm  gap-1 justify-start hover:bg-white px-2 py-1 w-full  items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                    </svg>
+
+
+
+                    <Typography
+                      as="span"
+                      variant="small"
+
+                      className="font-normal"
+                      color={"inherit"}
+                    >
+                      Add product
+                    </Typography>
+                  </Link>}
+                  <a onClick={LogOutUser} className="flex rounded-sm  gap-1 justify-start hover:bg-white px-2 py-1 w-full items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5.636 5.636a9 9 0 1 0 12.728 0M12 3v9" />
+                    </svg>
+
+
+                    <Typography
+                      as="span"
+                      variant="small"
+
+                      className="font-normal"
+                      color={"inherit"}
+                    >
+                      Sign Out
+                    </Typography>
+                  </a>
+
+                </MenuItem>
+              </MenuList>
+            </Menu>
           </div>
           <IconButton
             variant="text"

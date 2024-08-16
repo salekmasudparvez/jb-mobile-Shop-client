@@ -12,14 +12,17 @@ import {
     Spinner,
     Typography,
 } from "@material-tailwind/react";
+import useRole from "../../../hooks/useRole/useRole";
 
 
 const NavList = () => {
     const { user, LogOutUser, loading } = useAuth();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const[role,isLoading]=useRole();
+   
 
     const closeMenu = () => setIsMenuOpen(false);
-    if (loading) {
+    if (loading || isLoading) {
         return <div className="flex justify-center items-center ">
             <Spinner className="h-10 w-10" />
         </div>
@@ -54,7 +57,7 @@ const NavList = () => {
                                 onClick={closeMenu}
                                 variant="text"
                                 color="blue-gray"
-                                className="flex items-center rounded-full p-0"
+                                className="lg:flex hidden items-center rounded-full p-0"
                             >
                                 <Avatar
                                     variant="circular"
@@ -74,7 +77,7 @@ const NavList = () => {
                                         
                                     }`}
                             >
-                                { <Link to="/add-product" className="flex rounded-sm  gap-1 justify-start hover:bg-white px-2 py-1 w-full  items-center">
+                                {role==="admin" && <Link to="/add-product" className="flex rounded-sm  gap-1 justify-start hover:bg-white px-2 py-1 w-full  items-center">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                                     </svg>

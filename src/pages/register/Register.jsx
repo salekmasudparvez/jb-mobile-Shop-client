@@ -52,7 +52,7 @@ export const Register = () => {
             name,
             email,
             role:'user',
-            photoURL:response.user.photoURL || "",
+            photoURL:response.user.photoURL || "https://i.imgur.com/7Y3PdKY.png",
             time:format(new Date(2014, 1, 11), "dd/MM/yyyy")
         };
         

@@ -3,7 +3,7 @@ import axios from 'axios'
 import { useQuery } from '@tanstack/react-query'
 import useAuth from '../useAuth/useAuth'
 const useRole = () => {
-  const { user, loading } = useAuth()
+  const { user, loading } = useAuth();
 
   const { data: role = '', isLoading } = useQuery({
     queryKey: ['role', user?.email],
