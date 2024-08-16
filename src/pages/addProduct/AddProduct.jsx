@@ -1,4 +1,4 @@
-import { Avatar, Button, Input, Option, Select, Textarea } from "@material-tailwind/react";
+import { Avatar, Button, Input, Spinner, Textarea } from "@material-tailwind/react";
 import {
     Popover,
     PopoverHandler,
@@ -10,11 +10,12 @@ import { ChevronRightIcon, ChevronLeftIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
 
 
 const AddProduct = () => {
     const [date, setDate] = useState("");
-    console.log(date)
+    //console.log(date)
     const [category, setCategory] = useState("");
 
     const handleProduct = async (e) => {
@@ -25,6 +26,7 @@ const AddProduct = () => {
         const brandName = e.target.bName.value;
         const price = e.target.price.value;
         const productDescription = e.target.pDescription.value;
+        console.log(category)
 
         if (!productName) {
             return toast.error('Product name is required')
@@ -50,9 +52,9 @@ const AddProduct = () => {
 
         try {
             const formData = new FormData();
-            formData.append('image',image);
-            const res = await axios.post('http://localhost:5000/imageUpload',formData)
-            const imageURL= res?.data.imageUrl
+            formData.append('image', image);
+            const res = await axios.post('http://localhost:5000/imageUpload', formData)
+            const imageURL = res?.data.imageUrl
             const newProduct = {
                 name: productName,
                 brand: brandName,
@@ -62,14 +64,28 @@ const AddProduct = () => {
                 description: productDescription,
                 date
             }
-            const response = await axios.post('http://localhost:5000/productUpload',newProduct);
-            if(response.data){
+            const response = await axios.post('http://localhost:5000/productUpload', newProduct);
+            if (response.data) {
                 toast.success('Product added successfully')
                 console.log(response.data)
             }
         } catch (error) {
             toast.error(error.message || 'Error adding product')
         }
+    }
+    const { isLoading, data: cateData } = useQuery({
+        queryKey: ['allCategories'],
+        queryFn: async () => {
+            const response = await axios.get('http://localhost:5000/category');
+            const data = response.data;
+            return data;
+        }
+    })
+
+    if (isLoading) {
+        return <div className="flex justify-center items-center ">
+            <Spinner className="h-10 w-10" />
+        </div>
     }
 
     return (
@@ -82,15 +98,26 @@ const AddProduct = () => {
                     <Input name="pName" label="Product name"></Input>
                     <Input name="bName" label="Brand name"></Input>
                 </div>
-                <div className="flex gap-2 md:flex-row flex-col">
-                    <Select onChange={(val) => setCategory(val)} label="Select Category">
-                        <Option value="ye1">Material Tailwind HTML</Option>
-                        <Option value="y2">Material Tailwind React</Option>
-                        <Option>Material Tailwind Vue</Option>
-                        <Option>Material Tailwind Angular</Option>
-                        <Option>Material Tailwind Svelte</Option>
-                    </Select>
-                    <div className="">
+                <div className="flex gap-2 md:flex-row flex-col justify-between items-center">
+                    <select
+                     className="bg-blue-50 rounded-lg p-2 focus:outline-none lg:w-1/2 w-full  border border-gray-500"
+                        onChange={(e) => setCategory(e.target.value)}
+                        
+                    >
+                        <option selected disabled >Select category</option>
+                        {cateData && cateData.length > 0 ? (
+                            cateData.map((cate, idx) => (
+                                <option key={idx} value={cate?.category }>
+                                    {cate?.category}
+                                </option>
+                            ))
+                        ) : (
+                            <option value="default">No categories available</option>
+                        )}
+
+                    </select>
+
+                    <div className="lg:w-1/2 w-full">
                         <Popover placement="bottom">
                             <PopoverHandler>
                                 <Input

@@ -4,7 +4,6 @@ import {
   Collapse,
   Typography,
   IconButton,
-  Input,
   Button,
   MenuHandler,
   Menu,
@@ -20,7 +19,6 @@ import { Link } from "react-router-dom";
 
 const NavbarCompo = () => {
   const [openNav, setOpenNav] = useState(false);
-  const [open, setOpen] = useState(false);
   const { user, LogOutUser } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [role] = useRole();
@@ -40,11 +38,7 @@ const NavbarCompo = () => {
 
 
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-    console.log(e.target.name.value)
-    // Implement search logic here
-  };
+ 
 
   return (
     <Navbar className="mx-auto max-w-screen-xl px-6 py-3 space-y-3">
@@ -61,48 +55,14 @@ const NavbarCompo = () => {
 
 
 
-          <form onSubmit={handleSearch} className="relative hidden lg:flex w-full max-w-[24rem]">
-            <Input
-              type="text"
-              label="Search by name..."
-              name="name"
-              className="pr-20"
-              containerProps={{
-                className: "min-w-0",
-              }}
-            />
-            <Button
-              size="sm"
-              color="#fff"
-              type="submit"
-              className="!absolute right-1 top-2 rounded p-0 shadow-none hover:shadow-none bg-white"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#000000" className="size-6">
-                <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-              </svg>
-
-            </Button>
-          </form>
 
           <div className="hidden lg:block">
             <NavList />
           </div>
 
-          <div className="lg:hidden flex justify-end  flex-grow">
-            <Button
-              size="sm"
-              color="#fff"
-              onClick={() => setOpen(!open)}
-              className=" rounded p-0 shadow-none hover:shadow-none bg-white"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#000000" className="size-6">
-                <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-              </svg>
-
-            </Button>
-          </div>
-          <div className="px-5 lg:hidden flex">
-            <Menu open={isMenuOpen} handler={setIsMenuOpen} placement="bottom-end">
+         
+          <div className="px-5 justify-end flex-grow lg:hidden flex">
+            <Menu  open={isMenuOpen} handler={setIsMenuOpen} placement="bottom-end">
               <MenuHandler>
                 <Button
                   onClick={closeMenu}
@@ -183,30 +143,7 @@ const NavbarCompo = () => {
           <NavList />
         </Collapse>
       </div>
-      {open && <div className="flex justify-center">
-        <form onSubmit={handleSearch} className="relative flex lg:hidden w-full max-w-[24rem]">
-          <Input
-            type="text"
-            label="Search by name..."
-            name="name"
-            className="pr-20"
-            containerProps={{
-              className: "min-w-0",
-            }}
-          />
-          <Button
-            size="sm"
-            color="#fff"
-            type="submit"
-            className="!absolute right-1 top-2 rounded p-0 shadow-none hover:shadow-none bg-white"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#000000" className="size-6">
-              <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-            </svg>
-
-          </Button>
-        </form>
-      </div>}
+     
     </Navbar>
   );
 }
