@@ -59,7 +59,7 @@ const AddProduct = () => {
                 name: productName,
                 brand: brandName,
                 imageURL,
-                price: price,
+                price: parseInt(price),
                 category,
                 description: productDescription,
                 date
@@ -89,6 +89,8 @@ const AddProduct = () => {
     }
 
     return (
+        <>
+        
         <div className="py-8">
             <div className="w-full max-w-6xl mx-auto border-b-2 border-blue-500">
                 <div className="bg-blue-500 ml-1 px-2 py-1 -skew-x-12 w-fit  text-white text-xl font-bold"> Add production</div>
@@ -190,6 +192,8 @@ const AddProduct = () => {
                 </div>
             </form>
         </div>
+        </>
+        
     );
 };
 
