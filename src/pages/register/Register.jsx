@@ -7,12 +7,15 @@ import {
 } from "@material-tailwind/react";
 import { useState } from "react";
 import toast from 'react-hot-toast';
-import { Link, Navigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth/useAuth";
+import { format } from "date-fns";
+import axios from 'axios';
 
 export const Register = () => {
     const [check, setCheck] = useState(false);
-    const {creatUserPassword, user,updateUserProfile,setUser,creatUserGoogle} = useAuth()
+    const {creatUserPassword,updateUserProfile,setUser,creatUserGoogle} = useAuth();
+    const navigate = useNavigate()
     const handleInputChange = (e) => {
         //e.preventDefault();
         //console.log(e.target.checked)
@@ -22,7 +25,8 @@ export const Register = () => {
         e.preventDefault();
         const name = e.target.name.value;
         const email = e.target.email.value;
-        const password = e.target.password.value;
+        const password =
+         e.target.password.value;
         if (!check) {
             return toast.error("You must agree to the Terms and Conditions.")
         }
@@ -35,14 +39,31 @@ export const Register = () => {
         if (!password) {
             return toast.error("Password is required.")
         }
+        if (!/^.{6,}$/.test(password)) {
+            return toast.error("Password must be at least 6 characters long.");
+        }
+        
         // console.log({ name, email, password, checkbox: check })
        try {
         const response = await creatUserPassword(email, password);
+        console.log(response.user.email)
         await updateUserProfile(name);
+        const newUserDoc = {
+            name,
+            email,
+            role:'user',
+            photoURL:response.user.photoURL || "",
+            time:format(new Date(2014, 1, 11), "dd/MM/yyyy")
+        };
+        
+        const  newUser =await axios.post('http://localhost:5000/register', newUserDoc)
         setUser({ ...response?.user, displayName: name })
-        toast.success('Successfully created Account');
+        if(response && newUser){
+            toast.success('Successfully created Account');
+            navigate('/')
+        }
        } catch (error) {
-        //console.log(error.message);
+        console.log(error.message);
         if(error?.message==='Firebase: Error (auth/email-already-in-use).'){
            toast.error('Email already in use.');
         }else{
@@ -50,9 +71,7 @@ export const Register = () => {
         }
        }
     }
-    if (user) {
-        return <Navigate to="/"></Navigate>
-    }
+   
     return (
         <div className="flex justify-center items-center p-10">
             <div className="flex justify-center items-center max-w-4xl bg-blue-50 px-7 py-10 rounded-2xl gap-5">

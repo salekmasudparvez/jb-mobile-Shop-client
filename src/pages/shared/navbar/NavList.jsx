@@ -1,5 +1,5 @@
 
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import useAuth from "../../../hooks/useAuth/useAuth";
 import { useState } from "react";
 import {
@@ -19,7 +19,7 @@ const NavList = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const closeMenu = () => setIsMenuOpen(false);
-    if (loading ) {
+    if (loading) {
         return <div className="flex justify-center items-center ">
             <Spinner className="h-10 w-10" />
         </div>
@@ -70,11 +70,28 @@ const NavList = () => {
                         <MenuList className="p-1">
                             <MenuItem
 
-                                className={`flex items-center gap-2 rounded  focus:bg-blue-500/10 "
+                                className={`flex flex-col justify-center items-start text-left gap-2 rounded hover:bg-white "
                                         
                                     }`}
                             >
-                                <a onClick={LogOutUser} className="flex rounded-sm  gap-1 justify-center w-full items-center">
+                                { <Link to="/add-product" className="flex rounded-sm  gap-1 justify-start hover:bg-white px-2 py-1 w-full  items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                    </svg>
+
+
+
+                                    <Typography
+                                        as="span"
+                                        variant="small"
+
+                                        className="font-normal"
+                                        color={"inherit"}
+                                    >
+                                        Add product
+                                    </Typography>
+                                </Link>}
+                                <a onClick={LogOutUser} className="flex rounded-sm  gap-1 justify-start hover:bg-white px-2 py-1 w-full items-center">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M5.636 5.636a9 9 0 1 0 12.728 0M12 3v9" />
                                     </svg>
@@ -90,6 +107,7 @@ const NavList = () => {
                                         Sign Out
                                     </Typography>
                                 </a>
+
                             </MenuItem>
                         </MenuList>
                     </Menu>

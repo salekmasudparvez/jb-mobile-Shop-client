@@ -5,15 +5,11 @@ import React from "react";
 import {
     Drawer,
     Button,
-    Typography,
-    IconButton,
 } from "@material-tailwind/react";
 
 
 const Collection = () => {
     const [open, setOpen] = useState(false);
-
-    const openDrawer = () => setOpen(true);
     const closeDrawer = () => setOpen(false);
 
     return (
@@ -27,34 +23,7 @@ const Collection = () => {
                     Filter
                 </button>
             </div>
-            {/* {open && <div className="bg-white w-full text-white max-w-6xl mx-auto" >
-                <form className="flex justify-between">
-                    <div className="">
-                        <Select label="Select Category ">
-                            <Option>Material Tailwind HTML</Option>
-                            <Option>Material Tailwind React</Option>
-                            <Option>Material Tailwind Vue</Option>
-                            <Option>Material Tailwind Angular</Option>
-                            <Option>Material Tailwind Svelte</Option>
-                        </Select>
-                    </div>
-                    <div className="">
-                        <Select label="Select Brand ">
-                            <Option>Material Tailwind HTML</Option>
-                            <Option>Material Tailwind React</Option>
-                            <Option>Material Tailwind Vue</Option>
-                            <Option>Material Tailwind Angular</Option>
-                            <Option>Material Tailwind Svelte</Option>
-                        </Select>
-                    </div>
-                    <div className="flex text-primary gap-1 justify-center items-center" >
-                        <h1>Price </h1>
-                        <Input size="lg" label="Input Large" />
-                        <span>To</span>
-                        <Input size="lg" label="Input Large" />
-                    </div>
-                </form>
-            </div>} */}
+           
             <div className="w-full py-3 max-w-6xl mx-auto grid xl:grid-cols-6 lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-3 es place-items-center grid-cols-1  gap-2">
                 <CollectionCard></CollectionCard>
                 <CollectionCard></CollectionCard>
