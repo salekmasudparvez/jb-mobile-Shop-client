@@ -5,4 +5,11 @@
 .commonOutlet {
   min-height: calc(100vh - 203px);
 }
-
+.parallelogram{
+  transform: skew(-20deg);
+}
+@media (min-width: 320px) {
+  .es {
+    grid-template-columns: repeat(2, 1fr); /* 3 equal columns */
+  }
+}

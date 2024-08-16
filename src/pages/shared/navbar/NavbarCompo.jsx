@@ -42,7 +42,7 @@ const NavbarCompo = () => {
             as="a"
             href="/"
             variant="h6"
-            className="mr-4 cursor-pointer py-1.5 text-primary"
+            className="mr-4 text-2xl cursor-pointer py-1.5 text-primary"
           >
             Mobile Shop
           </Typography>
