@@ -61,7 +61,7 @@ const NavbarCompo = () => {
           </div>
 
          
-          <div className="px-5 justify-end flex-grow lg:hidden flex">
+         {user && <div className="px-5 justify-end flex-grow lg:hidden flex">
             <Menu  open={isMenuOpen} handler={setIsMenuOpen} placement="bottom-end">
               <MenuHandler>
                 <Button
@@ -125,7 +125,7 @@ const NavbarCompo = () => {
                 </MenuItem>
               </MenuList>
             </Menu>
-          </div>
+          </div>}
           <IconButton
             variant="text"
             className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
