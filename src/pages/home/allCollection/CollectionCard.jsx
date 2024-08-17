@@ -8,7 +8,7 @@ const CollectionCard = ({ product }) => {
     const daysAgo = differenceInDays(today, givenDate);
     //console.log(daysAgo)
     return (
-        <div className="md:w-[194px] h-[290px] relative cursor-pointer bg-white hover:shadow-md shadow-black hover:border-2">
+        <div className="md:w-[194px] h-[300px] relative cursor-pointer bg-white hover:shadow-md shadow-black hover:border-2">
             <div className='w-full flex justify-center items-center'>
                 <img className='w-[194px] h-[194px] object-cover bg-white' src={imageURL} alt="" />
             </div>

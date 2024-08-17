@@ -13,7 +13,7 @@ import { Link, Navigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth/useAuth";
 
 export const Login = () => {
-    const { user, signInWithPassword } = useAuth()
+    const { user, signInWithPassword,creatUserGoogle } = useAuth()
     const [check, setCheck] = useState(false)
     const handleInputChange = (e) => {
 
@@ -134,6 +134,7 @@ export const Login = () => {
                             variant="outlined"
                             color="blue-gray"
                             className="flex items-center gap-3"
+                            onClick={creatUserGoogle}
                         >
                             <img src="https://docs.material-tailwind.com/icons/google.svg" alt="metamask" className="h-6 w-6" />
                             Continue with Google
