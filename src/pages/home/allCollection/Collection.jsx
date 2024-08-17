@@ -143,7 +143,7 @@ const Collection = () => {
                 </div>
             </div>
             <div className="w-full bg-blue-gray-50  md:px-8 px-3 md:py-6">
-                <div className="w-full max-w-6xl mx-auto border-b-2 border-blue-500 flex justify-between">
+                <div className="w-full md:bg-transparent bg-blue-500 max-w-6xl mx-auto border-b-2 border-blue-500 flex justify-between">
                     <div className="bg-blue-500 md:ml-1 px-2 py-1 md:-skew-x-12 w-fit  text-white text-xl font-bold"> All collection</div>
                     <form className="hidden  rounded md:flex " onSubmit={handleSearch}>
                         <Input className="rounded-none  border bg-white" name="search" type="text" label="Search by name"></Input>

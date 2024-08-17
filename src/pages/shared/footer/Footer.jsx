@@ -18,11 +18,11 @@ import { Typography } from "@material-tailwind/react";
           <li>
             <Typography
               as="a"
-              href="#"
+              href="/"
               color="white"
               className="font-normal transition-colors hover:text-blue-500 focus:text-blue-500"
             >
-              About Us
+             Home
             </Typography>
           </li>
           <li>
@@ -48,7 +48,7 @@ import { Typography } from "@material-tailwind/react";
           <li>
             <Typography
               as="a"
-              href="#"
+              href="/contact"
               color="white"
               className="font-normal transition-colors hover:text-blue-500 focus:text-blue-500"
             >
