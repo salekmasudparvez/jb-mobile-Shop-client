@@ -1,13 +1,17 @@
 
 import PropTypes from 'prop-types';
-export const AllCategoryCard = ({cate}) => {
+import { Button } from 'react-day-picker';
+export const AllCategoryCard = ({cate,setTab,tab}) => {
     const {category}= cate || {}
     return (
-        <button className="w-16 h-16 border hover:shadow-md flex justify-center items-center">
+        <Button onClick={()=>setTab(category)} className={`w-16 rounded-md cursor-pointer h-16 border  hover:shadow-md flex justify-center items-center ${tab===category ? 'bg-blue-500 text-white':'bg-white text-gray-800'}`}>
             <h1>{category}</h1>
-        </button>
+        </Button>
     );
 }
 AllCategoryCard.propTypes={
     cate: PropTypes.object.isRequired,
+    setTab:PropTypes.func.isRequired,
+    tab: PropTypes.func.isRequired,
+
 }

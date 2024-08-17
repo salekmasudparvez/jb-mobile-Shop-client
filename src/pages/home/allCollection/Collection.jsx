@@ -1,6 +1,6 @@
 import CollectionCard from "./CollectionCard";
 import { useState } from 'react';
-import { Input } from "@material-tailwind/react";
+import { Input, Spinner } from "@material-tailwind/react";
 import React from "react";
 import {
     Drawer,
@@ -16,26 +16,65 @@ const Collection = () => {
     const [open, setOpen] = useState(false);
     const closeDrawer = () => setOpen(false);
     const [search, setSearch] = useState('');
+    const [itemPerPage, setItemPerPage] = useState(6);
+    const { isLoading: countLoading, data: countProduct } = useQuery({
+        queryKey: ['countProduct'],
+        queryFn: async () => {
+            const response = await axios.get('http://localhost:5000/count');
+            const data = response.data;
+            return data;
+        }
+    })
 
+    const { count = 0 } = countProduct || {}
+    const numberOfPages = Math.ceil(count / itemPerPage);
+    const pages = [...Array(numberOfPages).keys()];
+
+    const [currentPage, setCurrentPage] = useState(0);
     const [AllBrand, setAllBrand] = useState("")
     const [AllCategory, setAlCategory] = useState("")
     const [getMaxprice, setGetMaxprice] = useState('')
     const [getMinprice, setGetMinprice] = useState('')
+    const [tab, setTab] = useState('')
+    // pagination start
 
-    const { refetch, data: products } = useQuery({
-        queryKey: ['Allproducts', search, getMaxprice, getMinprice],
+
+    //console.log(countProduct)
+    const handlePerPage = (e) => {
+        const customItemPerPage = parseInt(e.target.value);
+        setItemPerPage(customItemPerPage);
+        setCurrentPage(0)
+    }
+    const handlePrevPage = () => {
+        if (currentPage > 0) {
+            setCurrentPage(currentPage - 1)
+        }
+    }
+    const handleNextPage = () => {
+        if (currentPage < pages.length - 1) {
+            setCurrentPage(currentPage + 1)
+        }
+    }
+
+    // pagination end
+    //tab start
+
+
+    const { refetch, isLoading: productLOading, data: products } = useQuery({
+        queryKey: ['Allproducts', search, currentPage, itemPerPage,tab,getMaxprice],
         queryFn: async () => {
-            let uri = 'http://localhost:5000/products';
+            let uri = `http://localhost:5000/products?page=${currentPage}&size=${itemPerPage}&tab=${tab}`
             if (search) {
-                uri = `http://localhost:5000/products?search=${search}`
+                uri = `http://localhost:5000/products?search=${search}&page=${currentPage}&size=${itemPerPage}&tab=${tab}`
             } else if (getMaxprice && getMinprice && AllCategory && AllBrand) {
-                uri = `http://localhost:5000/products?search=${search}&category=${AllCategory}&brand=${AllBrand}&minPrice=${getMinprice}&maxPrice=${getMaxprice}`
+                uri = `http://localhost:5000/products?search=${search}&category=${AllCategory}&brand=${AllBrand}&minPrice=${getMinprice}&maxPrice=${getMaxprice}&page=${currentPage}&size=${itemPerPage}&tab=${tab}`
             }
             const response = await axios.get(uri);
             const data = response.data;
             return data;
         }
     })
+    //tab end
     const handleSearch = (event) => {
         event.preventDefault();
         const searchValue = event.target.search.value;
@@ -58,11 +97,11 @@ const Collection = () => {
         }
         setGetMinprice(minPrice)
         setGetMaxprice(maxPrice)
-
-        console.log(minPrice, maxPrice)
+        refetch()
+        closeDrawer()
     }
-    const { isLoading, data: cateData } = useQuery({
-        queryKey: ['Categories'],
+    const { isLoading: categoryLoading, data: cateData } = useQuery({
+        queryKey: ['getCategories'],
         queryFn: async () => {
             const response = await axios.get('http://localhost:5000/category');
             const data = response.data;
@@ -77,7 +116,11 @@ const Collection = () => {
             return data;
         }
     })
-     
+
+    if (brandLoading || categoryLoading || productLOading || countLoading) {
+        return (<div className="flex justify-center items-center"><Spinner className="h-12 w-12" /></div>)
+    }
+
     return (
         <>
             <div className="w-full  md:px-8 px-3 md:py-6">
@@ -85,12 +128,15 @@ const Collection = () => {
                     <div className="bg-blue-500 ml-1 px-2 py-1 -skew-x-12 w-fit  text-white text-xl font-bold"> All category</div>
                 </div>
                 <div className="w-full max-w-6xl mx-auto flex gap-0 overflow-x-auto">
-                    <button className="w-16 h-16 border hover:shadow-md flex justify-center items-center">
+                   
+                    <Button onClick={() => setTab('')} className={`w-16 cursor-pointer bg-white text-gray-800 h-16 border hover:shadow-md flex justify-center items-center ${tab === '' && 'bg-blue-500 text-white'}`}>
                         <h1>All</h1>
-                    </button>
+                    </Button>
                     {cateData?.map((cate, idx) => <AllCategoryCard
                         key={idx}
                         cate={cate}
+                        setTab={setTab}
+                        tab={tab}
                     >
 
                     </AllCategoryCard>)}
@@ -156,7 +202,7 @@ const Collection = () => {
                                     <select onChange={(e) => setAlCategory(e.target.value)} className="border border-gray-400 px-3 py-1 w-full" label="Select Category ">
                                         <option selected disabled >Select category</option>
                                         {cateData && cateData?.length > 0 ? (
-                                            cateData.map((cate, idx) => (
+                                            cateData?.map((cate, idx) => (
                                                 <option key={idx} value={cate?.category}>
                                                     {cate?.category}
                                                 </option>
@@ -193,7 +239,29 @@ const Collection = () => {
                         </div>
                     </Drawer>
                 </React.Fragment>
-            </div></>
+                <div className='flex flex-col md:flex-row py-10 gap-7 justify-center items-center'>
+                    <div className='flex gap-6'>
+                        <a className="px-2 py-1 bg-blue-500 text-white rounded bg-first cursor-pointer" onClick={handlePrevPage}>Prev.</a>
+
+                        {pages.map(page => <button
+                            className={`btn btn-sm ${currentPage === page ? "bg-first cursor-pointer text-blue-500" : "cursor-pointer"}`}
+                            onClick={() => setCurrentPage(page)}
+                            key={page}
+                        >{page}</button>)}
+                        <a className="px-2 py-1 bg-blue-500 text-white rounded bg-first cursor-pointer" onClick={handleNextPage}>Next</a>
+                    </div>
+                    <div className="flex bg-neutral-300 p-2 rounded-md">
+                        <div className="font-medium text-gray-600 font-serif">Item per page</div>
+                        <select value={itemPerPage} onChange={handlePerPage} >
+                            <option value="6">06</option>
+                            <option value="9">09</option>
+                            <option value="20">20</option>
+                            <option value="50">50</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </>
     );
 };
 
