@@ -1,6 +1,6 @@
 import CollectionCard from "./CollectionCard";
 import { useState } from 'react';
-import { Input, Spinner } from "@material-tailwind/react";
+import { Input, Menu, MenuHandler, MenuItem, MenuList, Spinner } from "@material-tailwind/react";
 import React from "react";
 import {
     Drawer,
@@ -8,7 +8,6 @@ import {
 } from "@material-tailwind/react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import toast from "react-hot-toast";
 import { AllCategoryCard } from "./AllCategoryCard";
 
 
@@ -20,7 +19,7 @@ const Collection = () => {
     const { isLoading: countLoading, data: countProduct } = useQuery({
         queryKey: ['countProduct'],
         queryFn: async () => {
-            const response = await axios.get('https://mobile-shop-pro.vercel.app/count');
+            const response = await axios.get('http://localhost:5000/count');
             const data = response.data;
             return data;
         }
@@ -36,6 +35,7 @@ const Collection = () => {
     const [getMaxprice, setGetMaxprice] = useState('')
     const [getMinprice, setGetMinprice] = useState('')
     const [tab, setTab] = useState('')
+    const[sort,setSort]=useState('')
     // pagination start
 
 
@@ -61,14 +61,9 @@ const Collection = () => {
 
 
     const { refetch, isLoading: productLOading, data: products } = useQuery({
-        queryKey: ['Allproducts', search, currentPage, itemPerPage,tab,getMaxprice],
+        queryKey: ['Allproducts', search, currentPage, itemPerPage, tab, getMaxprice,sort],
         queryFn: async () => {
-            let uri = `https://mobile-shop-pro.vercel.app/products?page=${currentPage}&size=${itemPerPage}&tab=${tab}`
-            if (search) {
-                uri = `https://mobile-shop-pro.vercel.app/products?search=${search}&page=${currentPage}&size=${itemPerPage}&tab=${tab}`
-            } else if (getMaxprice && getMinprice && AllCategory && AllBrand) {
-                uri = `https://mobile-shop-pro.vercel.app/products?search=${search}&category=${AllCategory}&brand=${AllBrand}&minPrice=${getMinprice}&maxPrice=${getMaxprice}&page=${currentPage}&size=${itemPerPage}&tab=${tab}`
-            }
+            let uri = `http://localhost:5000/products?search=${search}&category=${AllCategory}&brand=${AllBrand}&minPrice=${getMinprice}&maxPrice=${getMaxprice}&page=${currentPage}&size=${itemPerPage}&tab=${tab}&sort=${sort}`
             const response = await axios.get(uri);
             const data = response.data;
             return data;
@@ -84,17 +79,8 @@ const Collection = () => {
     }
     const handleFilter = (event) => {
         event.preventDefault();
-        const minPrice = event.target.minPrice.value;
-        const maxPrice = event.target.maxPrice.value;
-        if (!AllCategory) {
-            return toast.error('Please select a category')
-        }
-        if (!AllBrand) {
-            return toast.error('Please select a brand')
-        }
-        if (!minPrice || !maxPrice) {
-            return toast.error('Please select price range')
-        }
+        const minPrice = event.target.minPrice.value || "";
+        const maxPrice = event.target.maxPrice.value || "";
         setGetMinprice(minPrice)
         setGetMaxprice(maxPrice)
         refetch()
@@ -103,7 +89,7 @@ const Collection = () => {
     const { isLoading: categoryLoading, data: cateData } = useQuery({
         queryKey: ['getCategories'],
         queryFn: async () => {
-            const response = await axios.get('https://mobile-shop-pro.vercel.app/category');
+            const response = await axios.get('http://localhost:5000/category');
             const data = response.data;
             return data;
         }
@@ -111,7 +97,7 @@ const Collection = () => {
     const { isLoading: brandLoading, data: brandData } = useQuery({
         queryKey: ['Brands'],
         queryFn: async () => {
-            const response = await axios.get('https://mobile-shop-pro.vercel.app/brands');
+            const response = await axios.get('http://localhost:5000/brands');
             const data = response.data;
             return data;
         }
@@ -120,7 +106,7 @@ const Collection = () => {
     if (brandLoading || categoryLoading || productLOading || countLoading) {
         return (<div className="flex justify-center items-center"><Spinner className="h-12 w-12" /></div>)
     }
-
+   console.log(sort)
     return (
         <>
             <div className="w-full  md:px-8 px-3 md:py-6">
@@ -128,7 +114,7 @@ const Collection = () => {
                     <div className="bg-blue-500 ml-1 px-2 py-1 -skew-x-12 w-fit  text-white text-xl font-bold"> All category</div>
                 </div>
                 <div className="w-full max-w-6xl mx-auto flex gap-0 overflow-x-auto">
-                   
+
                     <Button onClick={() => setTab('')} className={`w-16 cursor-pointer bg-white text-gray-800 h-16 border hover:shadow-md flex justify-center items-center ${tab === '' && 'bg-blue-500 text-white'}`}>
                         <h1>All</h1>
                     </Button>
@@ -154,12 +140,47 @@ const Collection = () => {
 
                         </button>
                     </form>
-                    <button onClick={() => setOpen(!open)} className={`flex px-3 py-1 border border-white rounded hover:shadow gap-1 shadow-black  ${open ? 'bg-blue-300' : 'bg-blue-500'} text-white `}>
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 0 1-.659 1.591l-5.432 5.432a2.25 2.25 0 0 0-.659 1.591v2.927a2.25 2.25 0 0 1-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 0 0-.659-1.591L3.659 7.409A2.25 2.25 0 0 1 3 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0 1 12 3Z" />
-                        </svg>
-                        Filter
-                    </button>
+                    <div className="flex">
+                        <button onClick={() => setOpen(!open)} className={`flex px-2 justify-center items-center text-xs sm:text-sm py-1 border border-white rounded hover:shadow gap-1 shadow-black  ${open ? 'bg-blue-300' : 'bg-blue-500'} text-white `}>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 0 1-.659 1.591l-5.432 5.432a2.25 2.25 0 0 0-.659 1.591v2.927a2.25 2.25 0 0 1-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 0 0-.659-1.591L3.659 7.409A2.25 2.25 0 0 1 3 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0 1 12 3Z" />
+                            </svg>
+                            Filter
+                        </button>
+                        <Menu
+                            animate={{
+                                mount: { y: 0 },
+                                unmount: { y: 25 },
+                            }}
+                        >
+                            <MenuHandler>
+                                <button
+                                size="sm"
+                                    className="flex justify-center text-xs sm:text-sm items-center text-white px-2 gap-1 rounded bg-blue-500 border">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 24 24"><path fill="currentColor" d="M8 16H4l6 6V2H8zm6-11v17h2V8h4l-6-6z" /></svg>Sorting
+                                </button>
+                            </MenuHandler>
+                            <MenuList>
+                                <MenuItem onClick={()=>setSort('pDown')} className="flex gap-1 justify-center items-center">
+                                    <span> Price</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={4} d="m5 24l19 18l19-18H31V6H17v18z"></path></svg>
+                                </MenuItem>
+                                <MenuItem onClick={()=>setSort('pUp')} className="flex gap-1 justify-center items-center">
+                                    <span> Price</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={4} d="M5 24L24 6l19 18H31v18H17V24z"></path></svg>
+                                </MenuItem>
+                                <MenuItem onClick={()=>setSort('tDown')} className="flex gap-1 justify-center items-center">
+                                    <span> Time</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={4} d="m5 24l19 18l19-18H31V6H17v18z"></path></svg>
+                                </MenuItem>
+                                <MenuItem onClick={()=>setSort('tUp')} className="flex gap-1 justify-center items-center">
+                                    <span> Time</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={4} d="M5 24L24 6l19 18H31v18H17V24z"></path></svg>
+                                </MenuItem>
+                            </MenuList>
+                        </Menu>
+                    </div>
+
                 </div>
                 <div className="w-full bg-blue-500 max-w-6xl mx-auto  md:hidden flex justify-center items-center p-3">
                     <form className="rounded flex " onSubmit={handleSearch}>
@@ -196,7 +217,7 @@ const Collection = () => {
                             </div>
                             <form onSubmit={handleFilter} className="flex justify-between flex-col gap-3">
                                 <div className="flex justify-center items-center p-2">
-                                    <h1 className="text-primary font-bold text-xl">Filter</h1>
+                                    <h1 className="text-primary font-bold text-2xl">Filter</h1>
                                 </div>
                                 <div className="">
                                     <select onChange={(e) => setAlCategory(e.target.value)} className="border border-gray-400 px-3 py-1 w-full" label="Select Category ">

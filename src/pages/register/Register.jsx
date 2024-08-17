@@ -56,7 +56,7 @@ export const Register = () => {
             time:format(new Date(2014, 1, 11), "dd/MM/yyyy")
         };
         
-        const  newUser =await axios.post('https://mobile-shop-pro.vercel.app/register', newUserDoc)
+        const  newUser =await axios.post('http://localhost:5000/register', newUserDoc)
         setUser({ ...response?.user, displayName: name })
         if(response && newUser){
             toast.success('Successfully created Account');
