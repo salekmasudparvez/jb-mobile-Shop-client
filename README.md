@@ -1,8 +1,33 @@
-# React + Vite
+# Mobile shop
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a mobile shop which will provide the client to their favorite mobile buy cell services
 
 Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## How to run this project
+
+first you have clone this project and then replace the env variables
+
+Step-1:
+
+```bash
+  npm install
+```
+
+Step-2:
+
+```bash
+  npm run dev
+```
+
+Step-3:
+Replace the environment variables
+
+- VITE_apiKey
+- VITE_authDomain
+- VITE_projectId
+- VITE_storageBucket
+- VITE_messagingSenderId
+- VITE_appId
+
+- [Live link](https://mobileshop-pro.netlify.app/)
