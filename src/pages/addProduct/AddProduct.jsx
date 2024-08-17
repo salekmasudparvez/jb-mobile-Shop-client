@@ -1,4 +1,4 @@
-import { Avatar, Button, Input, Spinner, Textarea } from "@material-tailwind/react";
+import { Button, Input, Spinner, Textarea } from "@material-tailwind/react";
 import {
     Popover,
     PopoverHandler,
@@ -72,7 +72,7 @@ const AddProduct = () => {
             const response = await axios.post('https://mobile-shop-pro.vercel.app/productUpload', newProduct);
             if (response.data) {
                 toast.success('Product added successfully')
-                console.log(response.data)
+                e.target.reset()
             }
         } catch (error) {
             toast.error(error.message || 'Error adding product')
