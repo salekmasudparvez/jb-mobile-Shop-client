@@ -2,7 +2,10 @@
 
 This is a mobile shop which will provide the client to their favorite mobile buy cell services
 
-Currently, two official plugins are available:
+- user can easy find their choices using search bar
+- user can also filter by category
+- user can also filter by brand ,price range
+- user can get spacific categories product using tab
 
 ## How to run this project
 
