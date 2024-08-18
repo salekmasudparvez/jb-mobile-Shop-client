@@ -13,10 +13,10 @@ const AuthProvider = ({ children }) => {
     const providerGoogle = new GoogleAuthProvider();
     const creatUserGoogle = () => {
         setLoading(true)
-        return signInWithPopup(auth, providerGoogle)
+        return  signInWithPopup(auth, providerGoogle)
 
     }
-    const creatUserPassword = (email, password) => {
+    const creatUserPassword = async(email, password) => {
         setLoading(true)
         return createUserWithEmailAndPassword(auth, email, password)
     }

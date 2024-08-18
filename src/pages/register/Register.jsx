@@ -14,18 +14,18 @@ import axios from 'axios';
 
 export const Register = () => {
     const [check, setCheck] = useState(false);
-    const {creatUserPassword,updateUserProfile,setUser,creatUserGoogle} = useAuth();
+    const { creatUserPassword, updateUserProfile, setUser, creatUserGoogle } = useAuth();
     const navigate = useNavigate()
     const handleInputChange = (e) => {
-      
+
         setCheck(e.target.checked)
     }
-    const handleRegister = async(e) => {
+    const handleRegister = async (e) => {
         e.preventDefault();
         const name = e.target.name.value;
         const email = e.target.email.value;
         const password =
-         e.target.password.value;
+            e.target.password.value;
         if (!check) {
             return toast.error("You must agree to the Terms and Conditions.")
         }
@@ -41,36 +41,54 @@ export const Register = () => {
         if (!/^.{6,}$/.test(password)) {
             return toast.error("Password must be at least 6 characters long.");
         }
-        
-        
-       try {
-        const response = await creatUserPassword(email, password);
-       
-        await updateUserProfile(name);
-        const newUserDoc = {
-            name,
-            email,
-            role:'user',
-            photoURL:response.user.photoURL || "https://i.imgur.com/7Y3PdKY.png",
-            time:format(new Date(2014, 1, 11), "dd/MM/yyyy")
-        };
-        
-        const  newUser =await axios.post('https://mobile-shop-pro.vercel.app/register', newUserDoc)
-        setUser({ ...response?.user, displayName: name })
-        if(response && newUser){
-            toast.success('Successfully created Account');
-            navigate('/')
+
+
+        try {
+            const response = await creatUserPassword(email, password);
+
+            await updateUserProfile(name);
+            const newUserDoc = {
+                name,
+                email,
+                role: 'user',
+                photoURL: response.user.photoURL || "https://i.imgur.com/7Y3PdKY.png",
+                time: format(new Date(2014, 1, 11), "dd/MM/yyyy")
+            };
+
+            const newUser = await axios.post('https://mobile-shop-pro.vercel.app/register', newUserDoc)
+            setUser({ ...response?.user, displayName: name })
+            if (response && newUser) {
+                toast.success('Successfully created Account');
+                navigate('/')
+            }
+        } catch (error) {
+
+            if (error?.message === 'Firebase: Error (auth/email-already-in-use).') {
+                toast.error('Email already in use.');
+            } else {
+                toast.error('Failed to create Account');
+            }
         }
-       } catch (error) {
-       
-        if(error?.message==='Firebase: Error (auth/email-already-in-use).'){
-           toast.error('Email already in use.');
-        }else{
-            toast.error('Failed to create Account');
-        }
-       }
+
     }
-   
+    const handleGoogleSingUp = () => {
+
+        creatUserGoogle()
+            .then(res => {
+                console.log(res)
+                const newUserDoc = {
+                    name: res?.user?.displayName,
+                    email: res?.user?.email,
+                    role: 'user',
+                    photoURL: res?.user?.photoURL || "https://i.imgur.com/7Y3PdKY.png",
+                    time: format(new Date(2014, 1, 11), "dd/MM/yyyy")
+                };
+                axios.post('https://mobile-shop-pro.vercel.app/register', newUserDoc)
+                toast.success('Successfully created Account')
+                navigate('/')
+            })
+
+    }
     return (
         <div className="flex justify-center items-center p-10">
             <div className="flex justify-center items-center max-w-4xl bg-blue-50 px-7 py-10 rounded-2xl gap-5">
@@ -82,7 +100,7 @@ export const Register = () => {
                 </div>
                 <Card color="transparent" shadow={false}>
                     <Typography variant="h4" color="blue-gray">
-                       Registration
+                        Registration
                     </Typography>
                     <Typography color="gray" className="mt-1 font-normal">
                         Nice to meet you! Enter your details to register.
@@ -153,14 +171,14 @@ export const Register = () => {
                     </form>
                     <div className="flex justify-center items-center my-2">
                         <span className="border-t border-gray-800 flex grow"></span>
-                      <span className="px-2">Or</span> 
+                        <span className="px-2">Or</span>
                         <span className="border-t border-gray-800 flex-grow"></span>
                     </div>
                     <div className="flex justify-center ">
                         <Button
                             size="md"
                             variant="outlined"
-                            onClick={creatUserGoogle}
+                            onClick={handleGoogleSingUp}
                             color="blue-gray"
                             className="flex items-center gap-3"
                         >
@@ -169,7 +187,7 @@ export const Register = () => {
                         </Button>
                     </div>
                     <div>
-                    <Typography color="gray" className="mt-4 text-center font-normal">
+                        <Typography color="gray" className="mt-4 text-center font-normal">
                             Already have an account?{" "}
                             <Link to="/login" className="font-medium text-gray-900">
                                 Log in

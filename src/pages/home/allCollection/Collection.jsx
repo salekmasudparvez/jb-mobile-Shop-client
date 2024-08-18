@@ -35,11 +35,11 @@ const Collection = () => {
     const [getMaxprice, setGetMaxprice] = useState('')
     const [getMinprice, setGetMinprice] = useState('')
     const [tab, setTab] = useState('')
-    const[sort,setSort]=useState('')
+    const [sort, setSort] = useState('')
     // pagination start
 
 
-  
+
     const handlePerPage = (e) => {
         const customItemPerPage = parseInt(e.target.value);
         setItemPerPage(customItemPerPage);
@@ -61,7 +61,7 @@ const Collection = () => {
 
 
     const { refetch, isLoading: productLOading, data: products } = useQuery({
-        queryKey: ['Allproducts', search, currentPage, itemPerPage, tab, getMaxprice,sort],
+        queryKey: ['Allproducts', search, currentPage, itemPerPage, tab, getMaxprice, sort],
         queryFn: async () => {
             let uri = `https://mobile-shop-pro.vercel.app/products?search=${search}&category=${AllCategory}&brand=${AllBrand}&minPrice=${getMinprice}&maxPrice=${getMaxprice}&page=${currentPage}&size=${itemPerPage}&tab=${tab}&sort=${sort}`
             const response = await axios.get(uri);
@@ -75,7 +75,7 @@ const Collection = () => {
         const searchValue = event.target.search.value;
         setSearch(searchValue)
         refetch()
-      
+
     }
     const handleFilter = (event) => {
         event.preventDefault();
@@ -115,7 +115,7 @@ const Collection = () => {
                 </div>
                 <div className="w-full max-w-6xl mx-auto flex gap-0 overflow-x-auto">
 
-                    <Button onClick={() => setTab('')} className={`w-16 cursor-pointer bg-white text-gray-800 h-16 border hover:shadow-md flex justify-center items-center ${tab === '' && 'bg-blue-500 text-white'}`}>
+                    <Button onClick={() => setTab('')} className={`w-16 cursor-pointer rounded-sm bg-white text-gray-800 h-16 border hover:shadow-md flex justify-center items-center ${tab === '' && 'bg-blue-500 text-white'}`}>
                         <h1>All</h1>
                     </Button>
                     {cateData?.map((cate, idx) => <AllCategoryCard
@@ -155,25 +155,25 @@ const Collection = () => {
                         >
                             <MenuHandler>
                                 <button
-                                size="sm"
+                                    size="sm"
                                     className="flex justify-center text-xs sm:text-sm items-center text-white px-2 gap-1 rounded bg-blue-500 border">
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 24 24"><path fill="currentColor" d="M8 16H4l6 6V2H8zm6-11v17h2V8h4l-6-6z" /></svg>Sorting
                                 </button>
                             </MenuHandler>
                             <MenuList>
-                                <MenuItem onClick={()=>setSort('pDown')} className="flex gap-1 justify-center items-center">
+                                <MenuItem onClick={() => setSort('pDown')} className="flex gap-1 justify-center items-center">
                                     <span> Price</span>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={4} d="m5 24l19 18l19-18H31V6H17v18z"></path></svg>
                                 </MenuItem>
-                                <MenuItem onClick={()=>setSort('pUp')} className="flex gap-1 justify-center items-center">
+                                <MenuItem onClick={() => setSort('pUp')} className="flex gap-1 justify-center items-center">
                                     <span> Price</span>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={4} d="M5 24L24 6l19 18H31v18H17V24z"></path></svg>
                                 </MenuItem>
-                                <MenuItem onClick={()=>setSort('tDown')} className="flex gap-1 justify-center items-center">
+                                <MenuItem onClick={() => setSort('tDown')} className="flex gap-1 justify-center items-center">
                                     <span> Time</span>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={4} d="m5 24l19 18l19-18H31V6H17v18z"></path></svg>
                                 </MenuItem>
-                                <MenuItem onClick={()=>setSort('tUp')} className="flex gap-1 justify-center items-center">
+                                <MenuItem onClick={() => setSort('tUp')} className="flex gap-1 justify-center items-center">
                                     <span> Time</span>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={4} d="M5 24L24 6l19 18H31v18H17V24z"></path></svg>
                                 </MenuItem>

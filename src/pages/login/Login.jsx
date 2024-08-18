@@ -9,12 +9,15 @@ import {
 } from "@material-tailwind/react";
 import { useState } from "react";
 import toast from 'react-hot-toast';
-import { Link, Navigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth/useAuth";
+import axios from "axios";
+import { format } from "date-fns";
 
 export const Login = () => {
-    const { user, signInWithPassword,creatUserGoogle } = useAuth()
+    const {  signInWithPassword,creatUserGoogle } = useAuth()
     const [check, setCheck] = useState(false)
+    const navigate = useNavigate()
     const handleInputChange = (e) => {
 
         setCheck(e.target.checked)
@@ -51,9 +54,25 @@ export const Login = () => {
             }
         }
     }
-    if (user) {
-        return <Navigate to="/"></Navigate>
+    const handleGoogleSingUp = () => {
+
+        creatUserGoogle()
+        .then(res => {
+            console.log(res)
+            const newUserDoc = {
+                name: res?.user?.displayName,
+                email: res?.user?.email,
+                role: 'user',
+                photoURL: res?.user?.photoURL || "https://i.imgur.com/7Y3PdKY.png",
+                time: format(new Date(2014, 1, 11), "dd/MM/yyyy")
+            };
+            axios.post('https://mobile-shop-pro.vercel.app/register', newUserDoc)
+            toast.success('Successfully created Account')
+            navigate('/')
+        })
+
     }
+
     return (
         <div className="flex justify-center items-center p-10">
             <div className="flex justify-center items-center max-w-4xl bg-blue-50 px-7 py-10 rounded-2xl gap-5">
@@ -134,7 +153,7 @@ export const Login = () => {
                             variant="outlined"
                             color="blue-gray"
                             className="flex items-center gap-3"
-                            onClick={creatUserGoogle}
+                            onClick={handleGoogleSingUp}
                         >
                             <img src="https://docs.material-tailwind.com/icons/google.svg" alt="metamask" className="h-6 w-6" />
                             Continue with Google
