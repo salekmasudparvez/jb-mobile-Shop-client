@@ -34,7 +34,7 @@ export const Login = () => {
         if (!password) {
             return toast.error("Password is required.")
         }
-        //console.log({ email, password, checkbox: check })
+        
         try {
             const response = await signInWithPassword(email, password)
 
@@ -43,7 +43,7 @@ export const Login = () => {
             }
 
         } catch (error) {
-            console.log(error.message)
+          
             if(error?.message==='Firebase: Error (auth/invalid-credential).'){
                 toast.error("Invalid email or password.")
             }else{

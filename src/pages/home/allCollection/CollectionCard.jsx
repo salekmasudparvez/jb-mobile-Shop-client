@@ -7,7 +7,7 @@ const CollectionCard = ({ product }) => {
     const givenDate = parseISO(dateString)
     const today = new Date()
     const daysAgo = differenceInDays(today, givenDate);
-    //console.log(daysAgo)
+    
     return (
         <Link to={`/details/${_id}`} className="md:w-[194px] h-[300px] relative cursor-pointer bg-white hover:shadow-md shadow-black hover:border-2">
             <div className='w-full flex justify-center items-center'>

@@ -17,8 +17,7 @@ export const Register = () => {
     const {creatUserPassword,updateUserProfile,setUser,creatUserGoogle} = useAuth();
     const navigate = useNavigate()
     const handleInputChange = (e) => {
-        //e.preventDefault();
-        //console.log(e.target.checked)
+      
         setCheck(e.target.checked)
     }
     const handleRegister = async(e) => {
@@ -43,10 +42,10 @@ export const Register = () => {
             return toast.error("Password must be at least 6 characters long.");
         }
         
-        // console.log({ name, email, password, checkbox: check })
+        
        try {
         const response = await creatUserPassword(email, password);
-        console.log(response.user.email)
+       
         await updateUserProfile(name);
         const newUserDoc = {
             name,
@@ -56,14 +55,14 @@ export const Register = () => {
             time:format(new Date(2014, 1, 11), "dd/MM/yyyy")
         };
         
-        const  newUser =await axios.post('http://localhost:5000/register', newUserDoc)
+        const  newUser =await axios.post('https://mobile-shop-pro.vercel.app/register', newUserDoc)
         setUser({ ...response?.user, displayName: name })
         if(response && newUser){
             toast.success('Successfully created Account');
             navigate('/')
         }
        } catch (error) {
-        console.log(error.message);
+       
         if(error?.message==='Firebase: Error (auth/email-already-in-use).'){
            toast.error('Email already in use.');
         }else{
