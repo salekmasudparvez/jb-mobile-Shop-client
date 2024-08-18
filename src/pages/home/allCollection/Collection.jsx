@@ -15,11 +15,11 @@ const Collection = () => {
     const [open, setOpen] = useState(false);
     const closeDrawer = () => setOpen(false);
     const [search, setSearch] = useState('');
-    const [itemPerPage, setItemPerPage] = useState(6);
+    const [itemPerPage, setItemPerPage] = useState(10);
     const { isLoading: countLoading, data: countProduct } = useQuery({
         queryKey: ['countProduct'],
         queryFn: async () => {
-            const response = await axios.get('https://mobile-shop-pro.vercel.app/count');
+            const response = await axios.get('http://localhost:5000/count');
             const data = response.data;
             return data;
         }
@@ -63,7 +63,7 @@ const Collection = () => {
     const { refetch, isLoading: productLOading, data: products } = useQuery({
         queryKey: ['Allproducts', search, currentPage, itemPerPage, tab, getMaxprice,sort],
         queryFn: async () => {
-            let uri = `https://mobile-shop-pro.vercel.app/products?search=${search}&category=${AllCategory}&brand=${AllBrand}&minPrice=${getMinprice}&maxPrice=${getMaxprice}&page=${currentPage}&size=${itemPerPage}&tab=${tab}&sort=${sort}`
+            let uri = `http://localhost:5000/products?search=${search}&category=${AllCategory}&brand=${AllBrand}&minPrice=${getMinprice}&maxPrice=${getMaxprice}&page=${currentPage}&size=${itemPerPage}&tab=${tab}&sort=${sort}`
             const response = await axios.get(uri);
             const data = response.data;
             return data;
@@ -89,7 +89,7 @@ const Collection = () => {
     const { isLoading: categoryLoading, data: cateData } = useQuery({
         queryKey: ['getCategories'],
         queryFn: async () => {
-            const response = await axios.get('https://mobile-shop-pro.vercel.app/category');
+            const response = await axios.get('http://localhost:5000/category');
             const data = response.data;
             return data;
         }
@@ -97,7 +97,7 @@ const Collection = () => {
     const { isLoading: brandLoading, data: brandData } = useQuery({
         queryKey: ['Brands'],
         queryFn: async () => {
-            const response = await axios.get('https://mobile-shop-pro.vercel.app/brands');
+            const response = await axios.get('http://localhost:5000/brands');
             const data = response.data;
             return data;
         }
@@ -106,7 +106,7 @@ const Collection = () => {
     if (brandLoading || categoryLoading || productLOading || countLoading) {
         return (<div className="flex justify-center items-center"><Spinner className="h-12 w-12" /></div>)
     }
-   console.log(sort)
+   //console.log(sort)
     return (
         <>
             <div className="w-full  md:px-8 px-3 md:py-6">
@@ -194,7 +194,7 @@ const Collection = () => {
                     </form>
                 </div>
 
-                <div className="w-full py-3 max-w-6xl mx-auto grid xl:grid-cols-6 lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-3 es place-items-center grid-cols-1  gap-2">
+                <div className="w-full py-3 max-w-6xl mx-auto grid lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-3 es place-items-center grid-cols-1  gap-4">
 
                     {products?.map((product, idx) => {
                         return (
@@ -274,9 +274,9 @@ const Collection = () => {
                     <div className="flex bg-neutral-300 p-2 rounded-md">
                         <div className="font-medium text-gray-600 font-serif">Item per page</div>
                         <select value={itemPerPage} onChange={handlePerPage} >
-                            <option value="6">06</option>
-                            <option value="9">09</option>
+                            <option value="10">10</option>
                             <option value="20">20</option>
+                            <option value="30">30</option>
                             <option value="50">50</option>
                         </select>
                     </div>

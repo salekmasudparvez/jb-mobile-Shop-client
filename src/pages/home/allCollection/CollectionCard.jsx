@@ -1,14 +1,15 @@
 import { differenceInDays, parseISO } from 'date-fns';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 const CollectionCard = ({ product }) => {
-    const { name, imageURL, price, description, rating, date } = product || {}
+    const { name, imageURL, price, description, rating, date ,_id} = product || {}
     const dateString = date
     const givenDate = parseISO(dateString)
     const today = new Date()
     const daysAgo = differenceInDays(today, givenDate);
     //console.log(daysAgo)
     return (
-        <div className="md:w-[194px] h-[300px] relative cursor-pointer bg-white hover:shadow-md shadow-black hover:border-2">
+        <Link to={`/details/${_id}`} className="md:w-[194px] h-[300px] relative cursor-pointer bg-white hover:shadow-md shadow-black hover:border-2">
             <div className='w-full flex justify-center items-center'>
                 <img className='w-[194px] h-[194px] object-cover bg-white' src={imageURL} alt="" />
             </div>
@@ -33,7 +34,7 @@ const CollectionCard = ({ product }) => {
                 <p title={description} className="text-sm font-thin">{description?.slice(0, 40)} ...</p>
             </div>
             <div className="text-sm text-red-500 font-bold text-center">TK {price}</div>
-        </div>
+        </Link>
     );
 };
 CollectionCard.propTypes = {

@@ -57,7 +57,7 @@ const AddProduct = () => {
         try {
             const formData = new FormData();
             formData.append('image', image);
-            const res = await axios.post('https://mobile-shop-pro.vercel.app/imageUpload', formData)
+            const res = await axios.post('http://localhost:5000/imageUpload', formData)
             const imageURL = res?.data.imageUrl
             const newProduct = {
                 name: productName,
@@ -69,7 +69,7 @@ const AddProduct = () => {
                 date,
                 rating: parseInt(rating),
             }
-            const response = await axios.post('https://mobile-shop-pro.vercel.app/productUpload', newProduct);
+            const response = await axios.post('http://localhost:5000/productUpload', newProduct);
             if (response.data) {
                 toast.success('Product added successfully')
                 e.target.reset()
@@ -81,7 +81,7 @@ const AddProduct = () => {
     const { isLoading, data: cateData } = useQuery({
         queryKey: ['allCategories'],
         queryFn: async () => {
-            const response = await axios.get('https://mobile-shop-pro.vercel.app/category');
+            const response = await axios.get('http://localhost:5000/category');
             const data = response.data;
             return data;
         }
