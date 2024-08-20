@@ -31,7 +31,7 @@ const CollectionCard = ({ product }) => {
             </div>
             <div className="flex justify-center flex-col px-1 text-center">
                 <h1 className="text-sm font-bold">{name}</h1>
-                <p title={description} className="text-sm font-thin">{description?.slice(0, 40)} ...</p>
+                <p title={description} className="text-xs font-thin">{description?.slice(0, 40)} ...</p>
             </div>
             <div className="text-sm text-red-500 font-bold text-center">TK {price}</div>
         </Link>
