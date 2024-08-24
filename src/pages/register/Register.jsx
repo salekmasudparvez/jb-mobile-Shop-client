@@ -75,7 +75,7 @@ export const Register = () => {
 
         creatUserGoogle()
             .then(res => {
-                console.log(res)
+              
                 const newUserDoc = {
                     name: res?.user?.displayName,
                     email: res?.user?.email,

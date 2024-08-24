@@ -18,6 +18,11 @@ const CollectionDetails = () => {
     })
 
     const { name, imageURL, price, description, rating, date } = Product || {};
+    
+    const handleCart = () => {
+        
+       localStorage.setItem('cart', )
+    }
 
     if (isLoading) return (<div className="flex justify-center items-center"><Spinner className="h-12 w-12" /></div>);
     return (
@@ -33,7 +38,7 @@ const CollectionDetails = () => {
                         <p><span className="font-semibold">Description:</span> {description}</p>
                         <p><span className="font-semibold">Rating:</span>  {rating}</p>
                         <p><span className="font-semibold">Added Date :</span>  {new Date(date).toLocaleDateString()}</p>
-                        <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">Add to Cart</button>
+                        <button onClick={handleCart} className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">Add to Cart</button>
                     </div>
                 </div>
             </div>
