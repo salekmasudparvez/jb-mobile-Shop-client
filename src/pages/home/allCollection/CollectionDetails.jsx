@@ -21,6 +21,16 @@ const CollectionDetails = () => {
 
     const { name, imageURL, price, description, rating, date } = Product || {};
     
+
+    const { refetch,data } = useQuery({
+        queryKey: ['cart'],
+        queryFn: () => {
+            // Fetch cart data from localStorage
+            const cartData = localStorage.getItem('cart');
+            return cartData ? JSON.parse(cartData) : [];
+        },
+    });
+   
     const handleCart = (product) => {
         const cart = localStorage.getItem('cart');
     
@@ -34,12 +44,10 @@ const CollectionDetails = () => {
         } else {
          
             localStorage.setItem('cart', JSON.stringify([product]));
-            setCartOpen(true);
-            
-           
+            setCartOpen(true);  
         }
+        refetch()
     };
-    
     if (isLoading) return (<div className="flex justify-center items-center"><Spinner className="h-12 w-12" /></div>);
     return (
         <div className="w-full md:p-10 p-5">
@@ -60,6 +68,7 @@ const CollectionDetails = () => {
             </div>
             <Cart 
             cartOpen={cartOpen}
+            data={data}
             ></Cart>
         </div>
 
