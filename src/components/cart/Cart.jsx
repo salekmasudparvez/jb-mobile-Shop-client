@@ -1,19 +1,15 @@
 import React from "react";
 import {
     Drawer,
-    Button,
-    Typography,
-    IconButton,
 } from "@material-tailwind/react";
-import { useQuery } from "@tanstack/react-query";
 import CartCalculator from "./CartCalculator";
+import PropTypes from 'prop-types';
 
-export function Cart({cartOpen,data}) {
+const Cart =({cartOpen,data,refetch})=> {
     const [openRight, setOpenRight] = React.useState(false);
    
     const openDrawerRight = () => setOpenRight(true);
     const closeDrawerRight = () => setOpenRight(false);
-
     return (
         <React.Fragment>
            {cartOpen && <div className={`fixed right-[5%] top-3/4`}>
@@ -38,7 +34,7 @@ export function Cart({cartOpen,data}) {
                 {data?.map((singleData,idx)=><CartCalculator
                  key={idx} 
                  singleData={singleData}></CartCalculator>)}
-             <CartCalculator></CartCalculator>
+             <CartCalculator refetch={refetch}></CartCalculator>
              <div>
                 <img src="" alt="" />
              </div>
@@ -48,3 +44,9 @@ export function Cart({cartOpen,data}) {
         </React.Fragment>
     );
 }
+Cart.propTypes={
+    cartOpen: PropTypes.bool.isRequired,
+    data: PropTypes.array.isRequired,
+    refetch: PropTypes.func.isRequired
+}
+export default Cart

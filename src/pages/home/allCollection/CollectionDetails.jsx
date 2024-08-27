@@ -2,8 +2,8 @@ import { Spinner } from "@material-tailwind/react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import { Cart } from "../../../components/cart/Cart";
 import { useState } from "react";
+import Cart from "../../../components/cart/Cart";
 
 
 const CollectionDetails = () => {
@@ -27,7 +27,7 @@ const CollectionDetails = () => {
         queryFn: () => {
             // Fetch cart data from localStorage
             const cartData = localStorage.getItem('cart');
-            return cartData ? JSON.parse(cartData) : [];
+            return JSON.parse(cartData) 
         },
     });
    
@@ -66,9 +66,10 @@ const CollectionDetails = () => {
                     </div>
                 </div>
             </div>
-            <Cart 
+            <Cart
             cartOpen={cartOpen}
             data={data}
+            refetch={refetch}
             ></Cart>
         </div>
 
