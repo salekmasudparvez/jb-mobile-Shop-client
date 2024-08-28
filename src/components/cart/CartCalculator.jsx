@@ -1,7 +1,7 @@
 import { useState } from "react";
 import PropTypes from 'prop-types';
 
-const CartCalculator = ({ singleData, refetch }) => {
+const CartCalculator = ({ singleData, handleDataRefetch }) => {
     const [count, setCount] = useState(0);
     const {
         imageURL,
@@ -16,10 +16,12 @@ const CartCalculator = ({ singleData, refetch }) => {
     }
     const handleClearCart = (name) => {
         const cart = JSON.parse(localStorage.getItem('cart'))
-        const updateCart = cart.filter(getItem => getItem?.name !== name)
-        console.log(cart, '_________')
+        const updateCart = cart.filter(getItem =>{
+           return getItem?.name !== name
+        } )
         localStorage.setItem('cart', JSON.stringify(updateCart))
-        refetch()
+        handleDataRefetch()
+        
     }
     return (
         <div className="flex justify-center items-center border px-2 relative">

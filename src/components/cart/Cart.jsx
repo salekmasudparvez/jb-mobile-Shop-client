@@ -1,18 +1,25 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
     Drawer,
 } from "@material-tailwind/react";
 import CartCalculator from "./CartCalculator";
 import PropTypes from 'prop-types';
 
-const Cart =({cartOpen,data,refetch})=> {
+const Cart = ({ cartOpen, data, handleDataRefetch }) => {
     const [openRight, setOpenRight] = React.useState(false);
-   
+    
     const openDrawerRight = () => setOpenRight(true);
     const closeDrawerRight = () => setOpenRight(false);
+    useEffect(()=>{
+        if(data.length===0){
+        closeDrawerRight();
+        }
+    
+    },[data])
+
     return (
         <React.Fragment>
-           {cartOpen && <div className={`fixed right-[5%] top-3/4`}>
+             <div className={`fixed right-[5%] ${data?.length?'':'hidden'} top-3/4`}>
                
                 <button onClick={openDrawerRight} className="bg-gray-300 border-2 relative border-gray-300 rounded-full p-3 focus:border-black focus:border-2">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
@@ -21,32 +28,32 @@ const Cart =({cartOpen,data,refetch})=> {
                     <span className="bg-red-400 text-white p-1 -top-2 rounded-full absolute w-7 h-7">{data?.length}</span>
                 </button>
 
-            </div>}
+            </div>
 
             <Drawer
                 placement="right"
                 open={openRight}
                 onClose={closeDrawerRight}
-                className="p-4"
+                className={`p-4 ${data?.length?'':'hidden'}`}
             >
                  <h1 className=" px-2 py-4 text-xl font-bold text-center">Cart</h1>
              <div className="flex flex-col">
-                {data?.map((singleData,idx)=><CartCalculator
+                {data?.length>0 && data?.map((singleData,idx)=><CartCalculator
                  key={idx} 
-                 singleData={singleData}></CartCalculator>)}
-             <CartCalculator refetch={refetch}></CartCalculator>
+                 singleData={singleData} handleDataRefetch={handleDataRefetch}></CartCalculator>)}
+             
              <div>
                 <img src="" alt="" />
              </div>
              </div>
             </Drawer>
-
+            
         </React.Fragment>
     );
 }
-Cart.propTypes={
+Cart.propTypes = {
     cartOpen: PropTypes.bool.isRequired,
     data: PropTypes.array.isRequired,
-    refetch: PropTypes.func.isRequired
+    handleDataRefetch: PropTypes.func.isRequired
 }
 export default Cart
