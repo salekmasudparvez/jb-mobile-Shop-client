@@ -27,7 +27,7 @@ const CollectionDetails = () => {
         queryFn: () => {
             // Fetch cart data from localStorage
             const cartData = localStorage.getItem('cart');
-            return JSON.parse(cartData)
+            return JSON.parse(cartData)||[]
         },
     });
     const handleCart = (product) => {

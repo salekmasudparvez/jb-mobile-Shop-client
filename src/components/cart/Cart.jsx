@@ -34,17 +34,18 @@ const Cart = ({ cartOpen, data, handleDataRefetch }) => {
                 placement="right"
                 open={openRight}
                 onClose={closeDrawerRight}
-                className={`p-4 ${data?.length?'':'hidden'}`}
+                className={`p-4 ${data?.length?'':'hidden'} `}
             >
                  <h1 className=" px-2 py-4 text-xl font-bold text-center">Cart</h1>
-             <div className="flex flex-col">
+             <div className="flex flex-col gap-2 ">
+                
                 {data?.length>0 && data?.map((singleData,idx)=><CartCalculator
-                 key={idx} 
+                 key={idx}
                  singleData={singleData} handleDataRefetch={handleDataRefetch}></CartCalculator>)}
              
-             <div>
-                <img src="" alt="" />
-             </div>
+             
+             </div><div className="py-4 px-1 bg-gray-100 absolute w-full bottom-0">
+                <h1>Total Price:100</h1>
              </div>
             </Drawer>
             
