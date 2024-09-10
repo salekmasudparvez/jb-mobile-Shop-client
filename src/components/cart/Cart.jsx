@@ -17,6 +17,8 @@ const Cart = ({ cartOpen, data, handleDataRefetch }) => {
     
     },[data])
 
+    
+
     return (
         <React.Fragment>
              <div className={`fixed right-[5%] ${data?.length?'':'hidden'} top-3/4`}>
@@ -37,15 +39,17 @@ const Cart = ({ cartOpen, data, handleDataRefetch }) => {
                 className={`p-4 ${data?.length?'':'hidden'} `}
             >
                  <h1 className=" px-2 py-4 text-xl font-bold text-center">Cart</h1>
-             <div className="flex flex-col gap-2 ">
+             <div className="flex flex-col gap-2 overflow-y-auto h-full">
                 
-                {data?.length>0 && data?.map((singleData,idx)=><CartCalculator
+                {data?.length>0 && data?.map((singleData,idx)=>
+                <CartCalculator
                  key={idx}
                  singleData={singleData} handleDataRefetch={handleDataRefetch}></CartCalculator>)}
              
              
-             </div><div className="py-4 px-1 bg-gray-100 absolute w-full bottom-0">
-                <h1>Total Price:100</h1>
+             </div>
+             <div className="py-4  bg-gray-100 absolute w-full bottom-0 flex gap-1 justify-evenly px-2">
+                <h1>Total Price:100</h1> <button className="px-2 py-1 bg-blue-gray-100 rounded hover:bg-blue-gray-300">Buy</button>
              </div>
             </Drawer>
             

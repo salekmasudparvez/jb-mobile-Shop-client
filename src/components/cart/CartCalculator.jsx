@@ -2,18 +2,13 @@ import { useState } from "react";
 import PropTypes from 'prop-types';
 
 const CartCalculator = ({ singleData, handleDataRefetch }) => {
-    const [count, setCount] = useState(0);
+  
     const {
         imageURL,
         name,
+        price
     } = singleData || {}
-    const decrease = () => {
-        if (count < 1) {
-            setCount(0)
-        } else {
-            setCount(count - 1)
-        }
-    }
+ 
     const handleClearCart = (name) => {
         const cart = JSON.parse(localStorage.getItem('cart'))
         const updateCart = cart.filter(getItem =>{
@@ -26,9 +21,9 @@ const CartCalculator = ({ singleData, handleDataRefetch }) => {
     return (
         <div className="flex justify-center items-center border px-2 relative">
             <div className="flex justify-center items-center">
-                <button onClick={() => setCount(count + 1)} className="text-xl border rounded px-3 py-1 shadow-md w-8 items-center justify-center flex">+</button>
-                <h1 className="text-xl border rounded px-3 py-1 shadow-md w-8 items-center justify-center flex">{count}</h1>
-                <button onClick={() => decrease()} className="text-xl border rounded px-3 py-1 shadow-md w-8 items-center justify-center flex">-</button>
+                
+                <h1 className="text-sm border rounded px-2 py-1 shadow-mditems-center justify-center flex">{price}TK</h1>
+               
             </div>
             <div className="text-xs">{name}</div>
             <div>
