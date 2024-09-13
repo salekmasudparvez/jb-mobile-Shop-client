@@ -6,6 +6,7 @@ import { Login } from "../pages/login/Login";
 import AddProduct from "../pages/addProduct/AddProduct";
 import Contact from "../pages/contact/Contact";
 import CollectionDetails from "../pages/home/allCollection/CollectionDetails";
+import Profile from "../pages/profile/Profile";
 
 
 const Routes = createBrowserRouter([
@@ -36,6 +37,10 @@ const Routes = createBrowserRouter([
       {
         path: '/details/:id',
         element: <CollectionDetails></CollectionDetails>,
+      },
+      {
+        path: '/profile/:id',
+        element: <Profile></Profile>,
       }
     ]
   },
