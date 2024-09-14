@@ -15,9 +15,11 @@ import useRole from "../../../hooks/useRole/useRole";
 
 const NavList = () => {
   const { user, LogOutUser, loading } = useAuth();
+  console.log("🚀 ~ NavList ~ user:", user)
+ 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [role, isLoading] = useRole();
-//   console.log(user.email);
+
 
   const closeMenu = () => setIsMenuOpen(false);
   if (loading || isLoading) {
@@ -125,7 +127,7 @@ const NavList = () => {
                   </Link>
                 )}
                 <Link
-                  to={`/profile/`}
+                  to={`/profile`}
                   className="flex rounded-sm  gap-1 justify-start hover:bg-white px-2 py-1 w-full items-center"
                 >
                   <svg

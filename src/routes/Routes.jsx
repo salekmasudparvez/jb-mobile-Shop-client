@@ -39,7 +39,7 @@ const Routes = createBrowserRouter([
         element: <CollectionDetails></CollectionDetails>,
       },
       {
-        path: '/profile/:id',
+        path: '/profile',
         element: <Profile></Profile>,
       }
     ]
