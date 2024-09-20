@@ -15,7 +15,7 @@ import useRole from "../../../hooks/useRole/useRole";
 
 const NavList = () => {
   const { user, LogOutUser, loading } = useAuth();
-  console.log("🚀 ~ NavList ~ user:", user)
+
  
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [role, isLoading] = useRole();
