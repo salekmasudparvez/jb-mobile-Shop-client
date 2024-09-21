@@ -87,7 +87,7 @@ export const Login = () => {
                         Login now
                     </Typography>
                     <Typography color="gray" className="mt-1 font-normal">
-                        Nice to meet you! Enter your details to register.
+                        Nice to meet you! Enter your details to Log in.
                     </Typography>
                     <form onSubmit={handleRegister} className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96">
                         <div className="mb-1 flex flex-col gap-3">

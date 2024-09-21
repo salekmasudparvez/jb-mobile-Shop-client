@@ -21,6 +21,7 @@ const AddProduct = () => {
     const handleProduct = async (e) => {
         e.preventDefault();
         const image = e.target.image.files[0];
+        console.log(image)
        
         const productName = e.target.pName.value;
         const brandName = e.target.bName.value;

@@ -1,5 +1,5 @@
 import useAuth from "../../hooks/useAuth/useAuth"
-import React from "react";
+import React, { useRef } from "react";
 import {
   Button,
   Dialog,
@@ -9,21 +9,26 @@ import {
 } from "@material-tailwind/react";
 import { Input } from "@material-tailwind/react";
 import PhotoUpload from "../../components/PhotoUpload";
+import toast from "react-hot-toast";
 
 
 const Profile = () => {
-  const { user } = useAuth();
+  const { user ,updateUserProfile} = useAuth();
   const [file, setFile] = React.useState(null);
+  const newName = useRef('')
 console.log(file)
   const [open, setOpen] = React.useState(false);
  
   const handleOpen = () => setOpen(!open);
   const handleModal = () => {
     setOpen(!open);
-  }
- const handleUpdate =()=>{
+  } 
   
-  handleOpen()
+ const handleUpdate =()=>{
+  const displayNameValue = newName.current.value;
+    console.log(displayNameValue);
+    updateUserProfile(displayNameValue,)
+  //handleOpen()
  }
   return (
 
@@ -52,7 +57,14 @@ console.log(file)
           setFile={setFile}
           file={file}
           ></PhotoUpload>
-        <Input variant="standard" label="Display Name" placeholder="Display Name"/>
+        <Input
+        inputRef={newName}
+        defaultValue={user?.displayName}
+        variant="standard"
+        label="Display Name"
+        name="namne"
+        placeholder="Display Name"
+      />
         
         </DialogBody>
         <DialogFooter>
