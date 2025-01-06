@@ -2,10 +2,15 @@
 
 This is a mobile shop which will provide the client to their favorite mobile buy cell services
 
-- user can easy find their choices using search bar
-- user can also filter by category
-- user can also filter by brand ,price range
-- user can get spacific categories product using tab
+
+## Features
+
+- **Search Bar**: Users can easily find their preferred products.
+- **Filter by Category**: Narrow down options by selecting specific categories.
+- **Filter by Brand and Price Range**: Choose products based on brand and budget.
+- **Tabs for Specific Categories**: Quickly access products from specific categories using tabs.
+
+---
 
 ## How to run this project
 
